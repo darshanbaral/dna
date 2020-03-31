@@ -13,7 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import "./styles.css";
 
 export default class App extends React.Component {
-  state = {
+  state: { [key: string]: any } = {
     seq: "ACTG",
     bc: true, //base count
     bcval: 4,
@@ -43,7 +43,6 @@ export default class App extends React.Component {
     this.setState({ gcval: gcRatio });
   };
   getNBase = (seq: string) => {
-    console.log(seq.replace(/A|C|T|G|N/g, ""));
     let inValid: number = seq.replace(/A|C|T|G|N/g, "").length;
     console.log(inValid);
     let nBase: number = seq.match(/N/g) ? seq.match(/N/g).length : 0;
@@ -68,7 +67,13 @@ export default class App extends React.Component {
       .join("");
   };
   comp = (seq: string) => {
-    const lookup: object = { A: "T", T: "A", C: "G", G: "C", N: "N" };
+    let lookup: { [key: string]: string } = {
+      A: "T",
+      T: "A",
+      C: "G",
+      G: "C",
+      N: "N"
+    };
     return seq
       .split("")
       .map(el => lookup[el])
@@ -90,7 +95,7 @@ export default class App extends React.Component {
       });
     }
   };
-  onSliderChange = (_event: any, value: number) => {
+  onSliderChange = (_event: any, value: any) => {
     this.setState({ grp: value }, () => {
       this.displaySeqs(this.UValue);
     });
@@ -309,8 +314,8 @@ export default class App extends React.Component {
             {gcRatio}
             {nBase}
             {oSeq}
-            {revSeq}
             {compSeq}
+            {revSeq}
             {revCompSeq}
           </Grid>
         </Grid>
