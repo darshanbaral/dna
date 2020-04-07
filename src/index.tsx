@@ -138,7 +138,10 @@ export default class App extends React.Component {
       <React.Fragment>
         <strong>N Bases</strong>
         <pre>
-          {this.state.nbval} N bases and{" "}
+          <span style={{ color: this.state.nbval > 0 ? "red" : "inherit" }}>
+            {this.state.nbval}
+          </span>{" "}
+          N bases and{" "}
           <span style={{ color: this.state.invalid > 0 ? "red" : "inherit" }}>
             {this.state.invalid}
           </span>{" "}
@@ -149,10 +152,18 @@ export default class App extends React.Component {
       ""
     );
 
+    const makeNRed = (seq: string) => {
+      return seq.split("").map((el: string) => {
+        return (
+          <span style={{ color: el === "N" ? "red" : "inherit" }}>{el}</span>
+        );
+      });
+    };
+
     const oSeq = this.state.os ? (
       <React.Fragment>
         <strong>Original Sequence</strong>
-        <pre>{this.state.osval}</pre>
+        <pre>{makeNRed(this.state.osval)}</pre>
       </React.Fragment>
     ) : (
       ""
@@ -161,7 +172,7 @@ export default class App extends React.Component {
     const revSeq = this.state.rs ? (
       <React.Fragment>
         <strong>Reverse Sequence</strong>
-        <pre>{this.state.rsval}</pre>
+        <pre>{makeNRed(this.state.rsval)}</pre>
       </React.Fragment>
     ) : (
       ""
@@ -170,7 +181,7 @@ export default class App extends React.Component {
     const compSeq = this.state.cs ? (
       <React.Fragment>
         <strong>Complement Sequence</strong>
-        <pre>{this.state.csval}</pre>
+        <pre>{makeNRed(this.state.csval)}</pre>
       </React.Fragment>
     ) : (
       ""
@@ -179,7 +190,7 @@ export default class App extends React.Component {
     const revCompSeq = this.state.rcs ? (
       <React.Fragment>
         <strong>Reverse Complement Sequence</strong>
-        <pre>{this.state.rcsval}</pre>
+        <pre>{makeNRed(this.state.rcsval)}</pre>
       </React.Fragment>
     ) : (
       ""
