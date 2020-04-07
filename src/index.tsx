@@ -30,7 +30,7 @@ export default class App extends React.Component {
     rsval: "GTCA",
     rcs: true, //Reverse Complement Sequence
     rcsval: "CAGT",
-    grp: 4 //Groups of letters in the output (eg. ACT GTA CT)
+    grp: 4, //Groups of letters in the output (eg. ACT GTA CT)
   };
   UValue = "ACTG";
   countBase = (seq: string) => {
@@ -43,8 +43,7 @@ export default class App extends React.Component {
     this.setState({ gcval: gcRatio });
   };
   getNBase = (seq: string) => {
-    let inValid: number = seq.replace(/A|C|T|G|N/g, "").length;
-    console.log(inValid);
+    let inValid: number = seq.replace(/A|C|T|G|N|\s|\n/g, "").length;
     let nBase: number = seq.match(/N/g) ? seq.match(/N/g).length : 0;
     this.setState({ nbval: nBase, invalid: inValid });
   };
@@ -61,10 +60,7 @@ export default class App extends React.Component {
     return seq.match(re).join(" ");
   };
   rev = (seq: string) => {
-    return seq
-      .split("")
-      .reverse()
-      .join("");
+    return seq.split("").reverse().join("");
   };
   comp = (seq: string) => {
     let lookup: { [key: string]: string } = {
@@ -72,11 +68,11 @@ export default class App extends React.Component {
       T: "A",
       C: "G",
       G: "C",
-      N: "N"
+      N: "N",
     };
     return seq
       .split("")
-      .map(el => lookup[el])
+      .map((el) => lookup[el])
       .join("");
   };
   displaySeqs = (seq: string) => {
@@ -91,7 +87,7 @@ export default class App extends React.Component {
     }
     if (this.state.rcs) {
       this.setState({
-        rcsval: this.addSpace(this.rev(this.comp(seq)))
+        rcsval: this.addSpace(this.rev(this.comp(seq))),
       });
     }
   };
@@ -120,7 +116,7 @@ export default class App extends React.Component {
     this.setState({ [x]: !this.state[x] });
   };
   render() {
-    let baseCount = this.state.bc ? (
+    const baseCount = this.state.bc ? (
       <React.Fragment>
         <strong>Number of Bases</strong>
         <pre>{this.state.bcval}</pre>
@@ -129,7 +125,7 @@ export default class App extends React.Component {
       ""
     );
 
-    let gcRatio = this.state.gc ? (
+    const gcRatio = this.state.gc ? (
       <React.Fragment>
         <strong>GC Ratio</strong>
         <pre>{this.state.gcval}</pre>
@@ -138,18 +134,22 @@ export default class App extends React.Component {
       ""
     );
 
-    let nBase = this.state.nb ? (
+    const nBase = this.state.nb ? (
       <React.Fragment>
         <strong>N Bases</strong>
         <pre>
-          {this.state.nbval} N bases and {this.state.invalid} invalid bases.
+          {this.state.nbval} N bases and{" "}
+          <span style={{ color: this.state.invalid > 0 ? "red" : "inherit" }}>
+            {this.state.invalid}
+          </span>{" "}
+          invalid bases.
         </pre>
       </React.Fragment>
     ) : (
       ""
     );
 
-    let oSeq = this.state.os ? (
+    const oSeq = this.state.os ? (
       <React.Fragment>
         <strong>Original Sequence</strong>
         <pre>{this.state.osval}</pre>
@@ -158,7 +158,7 @@ export default class App extends React.Component {
       ""
     );
 
-    let revSeq = this.state.rs ? (
+    const revSeq = this.state.rs ? (
       <React.Fragment>
         <strong>Reverse Sequence</strong>
         <pre>{this.state.rsval}</pre>
@@ -167,7 +167,7 @@ export default class App extends React.Component {
       ""
     );
 
-    let compSeq = this.state.cs ? (
+    const compSeq = this.state.cs ? (
       <React.Fragment>
         <strong>Complement Sequence</strong>
         <pre>{this.state.csval}</pre>
@@ -176,7 +176,7 @@ export default class App extends React.Component {
       ""
     );
 
-    let revCompSeq = this.state.rcs ? (
+    const revCompSeq = this.state.rcs ? (
       <React.Fragment>
         <strong>Reverse Complement Sequence</strong>
         <pre>{this.state.rcsval}</pre>
@@ -196,7 +196,7 @@ export default class App extends React.Component {
                   resize: "vertical",
                   width: "95%",
                   minHeight: "20px",
-                  fontSize: "1em"
+                  fontSize: "1em",
                 }}
                 rows={5}
                 value={this.state.seq}
@@ -307,7 +307,7 @@ export default class App extends React.Component {
             style={{
               backgroundColor: "#bbdefb",
               border: "1px solid #1976d2",
-              borderRadius: "5px"
+              borderRadius: "5px",
             }}
           >
             {baseCount}
