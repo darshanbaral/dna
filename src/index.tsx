@@ -5,6 +5,7 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import Options from "./components/options";
 
 import Slider from "@material-ui/core/Slider";
 
@@ -32,26 +33,54 @@ export default class App extends React.Component {
     rcsval: "CAGT",
     grp: 4, //Groups of letters in the output (eg. ACT GTA CT)
   };
+
+  ops = [
+    {
+      value: "base-count",
+      label: "Number of Bases",
+      retVal: "bc",
+    },
+    { value: "gc-ratio", label: "GC ratio", retVal: "gc" },
+    {
+      value: "n-base",
+      label: "N Bases (inculding invalid bases)",
+      retVal: "nb",
+    },
+    { value: "original", label: "Original Sequence", retVal: "os" },
+    { value: "complement", label: "Complement Sequence", retVal: "cs" },
+    { value: "reverse", label: "Reverse Sequence", retVal: "rs" },
+    {
+      value: "rev-complement",
+      label: "Reverse Complement Sequence",
+      retVal: "rcs",
+    },
+  ];
+
   UValue = "ACTG";
+
   countBase = (seq: string) => {
     this.setState({ bcval: seq.length });
   };
+
   getGCRatio = (seq: string) => {
     let gc = (seq.match(/G|C/g) || []).length;
     let at = (seq.match(/A|T/g) || []).length;
     let gcRatio = Math.round((100 * gc) / at) / 100;
     this.setState({ gcval: gcRatio });
   };
+
   getNBase = (seq: string) => {
     let inValid: number = seq.replace(/A|C|T|G|N|\s|\n/g, "").length;
     let nBase: number = seq.match(/N/g) ? seq.match(/N/g).length : 0;
     this.setState({ nbval: nBase, invalid: inValid });
   };
+
   sanitize = (seq: string) => {
     let sanitizedSeq: string;
     sanitizedSeq = seq.replace(/\s/g, "");
     return sanitizedSeq.replace(/[^A|C|T|G|N]/g, "N");
   };
+
   addSpace = (seq: string) => {
     if (this.state.grp === 0) {
       return seq;
@@ -59,9 +88,11 @@ export default class App extends React.Component {
     const re = new RegExp(`.{0,` + this.state.grp + `}`, "g");
     return seq.match(re).join(" ");
   };
+
   rev = (seq: string) => {
     return seq.split("").reverse().join("");
   };
+
   comp = (seq: string) => {
     let lookup: { [key: string]: string } = {
       A: "T",
@@ -75,6 +106,7 @@ export default class App extends React.Component {
       .map((el) => lookup[el])
       .join("");
   };
+
   displaySeqs = (seq: string) => {
     if (this.state.os) {
       this.setState({ osval: this.addSpace(seq) });
@@ -91,11 +123,13 @@ export default class App extends React.Component {
       });
     }
   };
+
   onSliderChange = (_event: any, value: any) => {
     this.setState({ grp: value }, () => {
       this.displaySeqs(this.UValue);
     });
   };
+
   onChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
     const target = event.target as HTMLTextAreaElement;
     let value: string = target.value;
@@ -109,12 +143,15 @@ export default class App extends React.Component {
     this.getGCRatio(this.UValue);
     this.getNBase(value.toUpperCase());
   };
+
   onFocus = (event: React.FormEvent<HTMLTextAreaElement>) => {
     (event.target as HTMLTextAreaElement).select();
   };
-  onClick = (x: string) => {
-    this.setState({ [x]: !this.state[x] });
+
+  retFunc = (x: string, y: boolean) => {
+    this.setState({ [x]: y });
   };
+
   render() {
     const baseCount = this.state.bc ? (
       <React.Fragment>
@@ -230,84 +267,47 @@ export default class App extends React.Component {
                 style={{ width: "95%" }}
               />
               <h3>Options</h3>
-              <FormControlLabel
-                labelPlacement="end"
-                control={
-                  <Checkbox
-                    value="base-count"
-                    color="primary"
-                    checked={this.state.bc}
-                    onClick={() => this.onClick("bc")}
-                  />
-                }
+              <Options
+                value="base-count"
                 label="Number of Bases"
+                retVal="bc"
+                retFunc={this.retFunc}
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value="gc-ratio"
-                    color="primary"
-                    checked={this.state.gc}
-                    onClick={() => this.onClick("gc")}
-                  />
-                }
-                label="GC Ratio"
+              <Options
+                value="gc-ratio"
+                label="GC ratio"
+                retVal="gc"
+                retFunc={this.retFunc}
               />
-              <FormControlLabel
-                labelPlacement="end"
-                control={
-                  <Checkbox
-                    value="n-base"
-                    color="primary"
-                    checked={this.state.nb}
-                    onClick={() => this.onClick("nb")}
-                  />
-                }
+              <Options
+                value="n-base"
                 label="N Bases (inculding invalid bases)"
+                retVal="nb"
+                retFunc={this.retFunc}
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value="original"
-                    color="primary"
-                    checked={this.state.os}
-                    onClick={() => this.onClick("os")}
-                  />
-                }
+              <Options
+                value="original"
                 label="Original Sequence"
+                retVal="os"
+                retFunc={this.retFunc}
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value="complement"
-                    color="primary"
-                    checked={this.state.cs}
-                    onClick={() => this.onClick("cs")}
-                  />
-                }
+              <Options
+                value="complement"
                 label="Complement Sequence"
+                retVal="cs"
+                retFunc={this.retFunc}
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value="reverse"
-                    color="primary"
-                    checked={this.state.rs}
-                    onClick={() => this.onClick("rs")}
-                  />
-                }
+              <Options
+                value="reverse"
                 label="Reverse Sequence"
+                retVal="rs"
+                retFunc={this.retFunc}
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value="rev-complement"
-                    color="primary"
-                    checked={this.state.rcs}
-                    onClick={() => this.onClick("rcs")}
-                  />
-                }
+              <Options
+                value="rev-complement"
                 label="Reverse Complement Sequence"
+                retVal="rcs"
+                retFunc={this.retFunc}
               />
             </FormGroup>
           </Grid>
