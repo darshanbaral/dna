@@ -130,7 +130,7 @@ export default class App extends React.Component {
     });
   };
 
-  onChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
+  onInputChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
     const target = event.target as HTMLTextAreaElement;
     let value: string = target.value;
     if (!value) {
@@ -234,7 +234,11 @@ export default class App extends React.Component {
     );
     return (
       <div className="App">
-        <h1 style={{ marginLeft: "none" }}>DNA</h1>
+        <Grid container spacing={4}>
+          <h1 style={{ marginLeft: "none" }}>
+            DNA by <a href="https://www.darshanbaral.com/">Darshan</a>
+          </h1>
+        </Grid>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} style={{ padding: "5px" }}>
             <FormGroup>
@@ -251,7 +255,7 @@ export default class App extends React.Component {
                 spellCheck={false}
                 aria-label="Enter DNA sequence"
                 placeholder="White spaces and line breaks will be ignored. Input is not case sensitive."
-                onChange={this.onChange}
+                onChange={this.onInputChange}
                 onFocus={this.onFocus}
               />
               <h3 style={{ marginTop: "0.5em" }}>Chunk Size</h3>
@@ -267,48 +271,16 @@ export default class App extends React.Component {
                 style={{ width: "95%" }}
               />
               <h3>Options</h3>
-              <Options
-                value="base-count"
-                label="Number of Bases"
-                retVal="bc"
-                retFunc={this.retFunc}
-              />
-              <Options
-                value="gc-ratio"
-                label="GC ratio"
-                retVal="gc"
-                retFunc={this.retFunc}
-              />
-              <Options
-                value="n-base"
-                label="N Bases (inculding invalid bases)"
-                retVal="nb"
-                retFunc={this.retFunc}
-              />
-              <Options
-                value="original"
-                label="Original Sequence"
-                retVal="os"
-                retFunc={this.retFunc}
-              />
-              <Options
-                value="complement"
-                label="Complement Sequence"
-                retVal="cs"
-                retFunc={this.retFunc}
-              />
-              <Options
-                value="reverse"
-                label="Reverse Sequence"
-                retVal="rs"
-                retFunc={this.retFunc}
-              />
-              <Options
-                value="rev-complement"
-                label="Reverse Complement Sequence"
-                retVal="rcs"
-                retFunc={this.retFunc}
-              />
+              {this.ops.map((el) => {
+                return (
+                  <Options
+                    value={el.value}
+                    label={el.label}
+                    retVal={el.retVal}
+                    retFunc={this.retFunc}
+                  />
+                );
+              })}
             </FormGroup>
           </Grid>
           <Grid
