@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono&display=swap");
-.App {
+body {
   font-family: "Roboto", sans-serif;
-  font-size: 14px;
-  margin: 10px auto 10px auto;
+  font-size: 16px;
   width: 90%;
+  max-width: 960px;
+  margin: 0 auto;
 }
 code,
 pre {
@@ -18,12 +19,11 @@ pre {
   word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
 h1 {
-  font-size: 2.1em;
+  font-size: 2.5em;
 }
 h2 {
-  font-size: 1.8em;
+  font-size: 2em;
 }
 h3 {
-  margin-bottom: 0.2em;
-  font-size: 1.3em;
+  font-size: 1.5em;
 }
