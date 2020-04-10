@@ -4,7 +4,7 @@ declare global {
     sanitize(): string;
     rev(): string;
     comp(): string;
-    addSpace(grp: number): String;
+    addSpace(grp: number): string;
     countBase(): number;
     getGCRatio(): number;
     getNBase(): number;
@@ -60,7 +60,7 @@ String.prototype.comp = function () {
 
 String.prototype.addSpace = function (grp: number) {
   if (grp === 0) {
-    return this;
+    return this.toString();
   }
   const re = new RegExp(`.{0,` + grp + `}`, "g");
   return this.match(re).join(" ");

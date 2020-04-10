@@ -33,7 +33,7 @@ export default class App extends React.Component {
     grp: 4, //Groups of letters in the output (eg. ACT GTA CT)
   };
 
-  UValue = "ACTG";
+  sanitizedValue = "ACTG";
 
   displaySeqs = (seq: string) => {
     if (this.state.os) {
@@ -54,7 +54,7 @@ export default class App extends React.Component {
 
   onSliderChange = (_event: any, value: any) => {
     this.setState({ grp: value }, () => {
-      this.displaySeqs(this.UValue);
+      this.displaySeqs(this.sanitizedValue);
     });
   };
 
@@ -64,11 +64,11 @@ export default class App extends React.Component {
     if (!value) {
       value = "";
     }
-    this.UValue = value.sanitize();
+    this.sanitizedValue = value.sanitize();
     this.setState({ seq: value });
-    this.displaySeqs(this.UValue);
-    this.setState({ bcval: this.UValue.countBase() });
-    this.setState({ gcval: this.UValue.getGCRatio() });
+    this.displaySeqs(this.sanitizedValue);
+    this.setState({ bcval: value.countBase() });
+    this.setState({ gcval: value.getGCRatio() });
     this.setState({ nbval: value.getNBase(), invalid: value.getInvalidBase() });
   };
 
