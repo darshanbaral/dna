@@ -4,6 +4,7 @@ declare global {
     sanitize(): string;
     rev(): string;
     comp(): string;
+    addSpace(grp: number): String;
     countBase(): number;
     getGCRatio(): number;
     getNBase(): number;
@@ -40,14 +41,6 @@ String.prototype.getInvalidBase = function () {
   return this.replace(/A|C|T|G|N|a|c|t|g|n|\s|\n/g, "").length;
 };
 
-const addSpace = (seq: string, grp: number) => {
-  if (grp === 0) {
-    return seq;
-  }
-  const re = new RegExp(`.{0,` + grp + `}`, "g");
-  return seq.match(re).join(" ");
-};
-
 String.prototype.rev = function () {
   return this.split("").reverse().join("");
 };
@@ -65,4 +58,12 @@ String.prototype.comp = function () {
     .join("");
 };
 
-export { addSpace };
+String.prototype.addSpace = function (grp: number) {
+  if (grp === 0) {
+    return this;
+  }
+  const re = new RegExp(`.{0,` + grp + `}`, "g");
+  return this.match(re).join(" ");
+};
+
+export {};

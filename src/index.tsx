@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 
 import Options from "./components/options";
 import ops from "./components/selectionOptions";
-import { addSpace } from "./components/helperFunctions";
+import {} from "./components/helperFunctions";
 
 import "./styles.css";
 
@@ -37,17 +37,17 @@ export default class App extends React.Component {
 
   displaySeqs = (seq: string) => {
     if (this.state.os) {
-      this.setState({ osval: addSpace(seq, this.state.grp) });
+      this.setState({ osval: seq.addSpace(this.state.grp) });
     }
     if (this.state.rs) {
-      this.setState({ rsval: addSpace(seq.rev(), this.state.grp) });
+      this.setState({ rsval: seq.rev().addSpace(this.state.grp) });
     }
     if (this.state.cs) {
-      this.setState({ csval: addSpace(seq.comp(), this.state.grp) });
+      this.setState({ csval: seq.comp().addSpace(this.state.grp) });
     }
     if (this.state.rcs) {
       this.setState({
-        rcsval: addSpace(seq.rev().comp(), this.state.grp),
+        rcsval: seq.rev().comp().addSpace(this.state.grp),
       });
     }
   };
