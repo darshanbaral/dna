@@ -8,15 +8,15 @@ const ops = [
   { value: "gc-ratio", label: "GC ratio", retVal: "gc" },
   {
     value: "n-base",
-    label: "N Bases (inculding invalid bases)",
+    label: "N Bases",
     retVal: "nb",
   },
-  { value: "original", label: "Original Sequence", retVal: "os" },
-  { value: "complement", label: "Complement Sequence", retVal: "cs" },
-  { value: "reverse", label: "Reverse Sequence", retVal: "rs" },
+  { value: "original", label: "Original ", retVal: "os" },
+  { value: "complement", label: "Complement ", retVal: "cs" },
+  { value: "reverse", label: "Reverse ", retVal: "rs" },
   {
     value: "rev-complement",
-    label: "Reverse Complement Sequence",
+    label: "Reverse Complement",
     retVal: "rcs",
   },
 ];
