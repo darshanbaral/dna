@@ -3,6 +3,8 @@ import { render } from "react-dom";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormGroup from "@material-ui/core/FormGroup";
 import OptionList from "./components/optionList";
+import PanelContainer from "./components/panelContainer";
+import SeqPanelContent from "./components/seqPanelContent";
 import {} from "./components/helperFunctions";
 import "./styles.css";
 
@@ -60,7 +62,7 @@ export default class App extends React.Component {
     this.setState({ nbval: value.getNBase(), invalid: value.getInvalidBase() });
   };
 
-  onFocus = (event: React.FormEvent<HTMLTextAreaElement>) => {
+  onFocusInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
     (event.target as HTMLTextAreaElement).select();
   };
 
@@ -75,85 +77,6 @@ export default class App extends React.Component {
   };
 
   render() {
-    const baseCount = this.state.bc ? (
-      <React.Fragment>
-        <strong>Number of Bases</strong>
-        <pre>{this.state.bcval}</pre>
-      </React.Fragment>
-    ) : (
-      ""
-    );
-
-    const gcRatio = this.state.gc ? (
-      <React.Fragment>
-        <strong>GC Ratio</strong>
-        <pre>{this.state.gcval}</pre>
-      </React.Fragment>
-    ) : (
-      ""
-    );
-
-    const nBase = this.state.nb ? (
-      <React.Fragment>
-        <strong>N Bases</strong>
-        <pre>
-          <span style={{ color: this.state.nbval > 0 ? "red" : "inherit" }}>
-            {this.state.nbval}
-          </span>{" "}
-          N bases and{" "}
-          <span style={{ color: this.state.invalid > 0 ? "red" : "inherit" }}>
-            {this.state.invalid}
-          </span>{" "}
-          invalid bases.
-        </pre>
-      </React.Fragment>
-    ) : (
-      ""
-    );
-
-    const makeNRed = (seq: string) => {
-      return seq.split("").map((el: string) => {
-        return (
-          <span style={{ color: el === "N" ? "red" : "inherit" }}>{el}</span>
-        );
-      });
-    };
-
-    const oSeq = this.state.os ? (
-      <React.Fragment>
-        <strong>Original Sequence</strong>
-        <pre>{makeNRed(this.state.osval)}</pre>
-      </React.Fragment>
-    ) : (
-      ""
-    );
-
-    const revSeq = this.state.rs ? (
-      <React.Fragment>
-        <strong>Reverse Sequence</strong>
-        <pre>{makeNRed(this.state.rsval)}</pre>
-      </React.Fragment>
-    ) : (
-      ""
-    );
-
-    const compSeq = this.state.cs ? (
-      <React.Fragment>
-        <strong>Complement Sequence</strong>
-        <pre>{makeNRed(this.state.csval)}</pre>
-      </React.Fragment>
-    ) : (
-      ""
-    );
-
-    const revCompSeq = this.state.rcs ? (
-      <React.Fragment>
-        <strong>Reverse Complement Sequence</strong>
-        <pre>{makeNRed(this.state.rcsval)}</pre>
-      </React.Fragment>
-    ) : (
-      ""
-    );
     return (
       <div className="App" style={{ marginLeft: "40px" }}>
         <h1
@@ -162,11 +85,11 @@ export default class App extends React.Component {
             padding: "10px 0",
           }}
         >
-          DNA by <a href="https://www.darshanbaral.com/">Darshan</a>
+          DNA
         </h1>
 
         <FormGroup>
-          <h3 style={{ marginTop: "0" }}>Enter DNA sequence</h3>
+          <h3 style={{ margin: "10px 0 10px 0" }}>Input DNA Data</h3>
           <TextareaAutosize
             style={{
               resize: "vertical",
@@ -179,7 +102,7 @@ export default class App extends React.Component {
             aria-label="Enter DNA sequence"
             placeholder="White spaces and line breaks will be ignored. Input is not case sensitive."
             onChange={this.onInputChange}
-            onFocus={this.onFocus}
+            onFocus={this.onFocusInput}
           />
           <OptionList
             checkedState={{
@@ -196,23 +119,89 @@ export default class App extends React.Component {
           />
         </FormGroup>
 
-        <div
-          style={{
-            backgroundColor: "#bbdefb",
-            padding: "5px",
-            margin: "5px",
-            border: "1px solid #1976d2",
-            borderRadius: "5px",
-          }}
-        >
-          {baseCount}
-          {gcRatio}
-          {nBase}
-          {oSeq}
-          {compSeq}
-          {revSeq}
-          {revCompSeq}
-        </div>
+        <h3 style={{ margin: "10px 0 0 0" }}>Outputs</h3>
+        <PanelContainer
+          label="Base Count"
+          content={
+            this.state.bc ? (
+              <React.Fragment>
+                <pre>{this.state.bcval}</pre>
+              </React.Fragment>
+            ) : (
+              ""
+            )
+          }
+          show={this.state.bc}
+        />
+        <PanelContainer
+          label="GC Ratio"
+          content={
+            this.state.gc ? (
+              <React.Fragment>
+                <pre>{this.state.gcval}</pre>
+              </React.Fragment>
+            ) : (
+              ""
+            )
+          }
+          show={this.state.gc}
+        />
+        <PanelContainer
+          label="N Bases"
+          content={
+            this.state.nb ? (
+              <React.Fragment>
+                <pre>
+                  <span
+                    style={{ color: this.state.nbval > 0 ? "red" : "inherit" }}
+                  >
+                    {this.state.nbval}
+                  </span>{" "}
+                  N bases and{" "}
+                  <span
+                    style={{
+                      color: this.state.invalid > 0 ? "red" : "inherit",
+                    }}
+                  >
+                    {this.state.invalid}
+                  </span>{" "}
+                  invalid bases.
+                </pre>
+              </React.Fragment>
+            ) : (
+              ""
+            )
+          }
+          show={this.state.nb}
+        />
+        <PanelContainer
+          label="Original Sequence"
+          content={
+            <SeqPanelContent val={this.state.osval} show={this.state.os} />
+          }
+          show={this.state.os}
+        />
+        <PanelContainer
+          label="Complement Sequence"
+          content={
+            <SeqPanelContent val={this.state.csval} show={this.state.cs} />
+          }
+          show={this.state.cs}
+        />
+        <PanelContainer
+          label="Reverse Sequence"
+          content={
+            <SeqPanelContent val={this.state.rsval} show={this.state.rs} />
+          }
+          show={this.state.rs}
+        />
+        <PanelContainer
+          label="Reverse Complement Sequence"
+          content={
+            <SeqPanelContent val={this.state.rcsval} show={this.state.rcs} />
+          }
+          show={this.state.rcs}
+        />
       </div>
     );
   }
