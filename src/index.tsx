@@ -1,15 +1,9 @@
 import * as React from "react";
 import { render } from "react-dom";
-
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormGroup from "@material-ui/core/FormGroup";
-import Slider from "@material-ui/core/Slider";
-import Grid from "@material-ui/core/Grid";
-
-import Options from "./components/options";
-import ops from "./components/selectionOptions";
+import OptionList from "./components/optionList";
 import {} from "./components/helperFunctions";
-
 import "./styles.css";
 
 export default class App extends React.Component {
@@ -52,12 +46,6 @@ export default class App extends React.Component {
     }
   };
 
-  onSliderChange = (_event: any, value: any) => {
-    this.setState({ grp: value }, () => {
-      this.displaySeqs(this.sanitizedValue);
-    });
-  };
-
   onInputChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
     const target = event.target as HTMLTextAreaElement;
     let value: string = target.value;
@@ -76,8 +64,14 @@ export default class App extends React.Component {
     (event.target as HTMLTextAreaElement).select();
   };
 
-  retFunc = (x: string, y: boolean) => {
+  handleCheckboxToggle = (x: string, y: boolean) => {
     this.setState({ [x]: y });
+  };
+
+  handleSliderChange = (_event: any, value: any) => {
+    this.setState({ grp: value }, () => {
+      this.displaySeqs(this.sanitizedValue);
+    });
   };
 
   render() {
@@ -161,75 +155,64 @@ export default class App extends React.Component {
       ""
     );
     return (
-      <div className="App">
-        <Grid container spacing={4}>
-          <h1 style={{ marginLeft: "none" }}>
-            DNA by <a href="https://www.darshanbaral.com/">Darshan</a>
-          </h1>
-        </Grid>
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={6} style={{ padding: "5px" }}>
-            <FormGroup>
-              <h3 style={{ marginTop: "0" }}>Enter DNA sequence</h3>
-              <TextareaAutosize
-                style={{
-                  resize: "vertical",
-                  width: "95%",
-                  minHeight: "20px",
-                  fontSize: "1em",
-                }}
-                rows={5}
-                value={this.state.seq}
-                spellCheck={false}
-                aria-label="Enter DNA sequence"
-                placeholder="White spaces and line breaks will be ignored. Input is not case sensitive."
-                onChange={this.onInputChange}
-                onFocus={this.onFocus}
-              />
-              <h3 style={{ marginTop: "0.5em" }}>Chunk Size</h3>
-              <Slider
-                defaultValue={4}
-                aria-labelledby="discrete-slider"
-                valueLabelDisplay="auto"
-                onChange={this.onSliderChange}
-                step={1}
-                marks={true}
-                min={0}
-                max={6}
-                style={{ width: "95%" }}
-              />
-              <h3>Options</h3>
-              {ops.map((el) => {
-                return (
-                  <Options
-                    value={el.value}
-                    label={el.label}
-                    retVal={el.retVal}
-                    retFunc={this.retFunc}
-                  />
-                );
-              })}
-            </FormGroup>
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={6}
+      <div className="App" style={{ marginLeft: "40px" }}>
+        <h1
+          style={{
+            margin: "0",
+            padding: "10px 0",
+          }}
+        >
+          DNA by <a href="https://www.darshanbaral.com/">Darshan</a>
+        </h1>
+
+        <FormGroup>
+          <h3 style={{ marginTop: "0" }}>Enter DNA sequence</h3>
+          <TextareaAutosize
             style={{
-              backgroundColor: "#bbdefb",
-              border: "1px solid #1976d2",
-              borderRadius: "5px",
+              resize: "vertical",
+              minHeight: "20px",
+              fontSize: "1em",
             }}
-          >
-            {baseCount}
-            {gcRatio}
-            {nBase}
-            {oSeq}
-            {compSeq}
-            {revSeq}
-            {revCompSeq}
-          </Grid>
-        </Grid>
+            rows={5}
+            value={this.state.seq}
+            spellCheck={false}
+            aria-label="Enter DNA sequence"
+            placeholder="White spaces and line breaks will be ignored. Input is not case sensitive."
+            onChange={this.onInputChange}
+            onFocus={this.onFocus}
+          />
+          <OptionList
+            checkedState={{
+              bc: this.state.bc,
+              gc: this.state.gc,
+              nb: this.state.nb,
+              rs: this.state.rs,
+              os: this.state.os,
+              cs: this.state.cs,
+              rcs: this.state.rcs,
+            }}
+            onCheckboxToggle={this.handleCheckboxToggle}
+            onSliderChange={this.handleSliderChange}
+          />
+        </FormGroup>
+
+        <div
+          style={{
+            backgroundColor: "#bbdefb",
+            padding: "5px",
+            margin: "5px",
+            border: "1px solid #1976d2",
+            borderRadius: "5px",
+          }}
+        >
+          {baseCount}
+          {gcRatio}
+          {nBase}
+          {oSeq}
+          {compSeq}
+          {revSeq}
+          {revCompSeq}
+        </div>
       </div>
     );
   }
