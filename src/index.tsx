@@ -1,15 +1,14 @@
 import * as React from "react";
 import { render } from "react-dom";
+
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-
 import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Options from "./components/options";
-
 import Slider from "@material-ui/core/Slider";
-
 import Grid from "@material-ui/core/Grid";
+
+import Options from "./components/options";
+import ops from "./components/selectionOptions";
+import { addSpace } from "./components/helperFunctions";
 
 import "./styles.css";
 
@@ -18,8 +17,8 @@ export default class App extends React.Component {
     seq: "ACTG",
     bc: true, //base count
     bcval: 4,
-    gc: true,
-    gcval: 0.5, //GC ratio
+    gc: true, //GC ratio
+    gcval: 0.5,
     nb: true, //N bases
     nbval: 0,
     invalid: 0,
@@ -34,92 +33,21 @@ export default class App extends React.Component {
     grp: 4, //Groups of letters in the output (eg. ACT GTA CT)
   };
 
-  ops = [
-    {
-      value: "base-count",
-      label: "Number of Bases",
-      retVal: "bc",
-    },
-    { value: "gc-ratio", label: "GC ratio", retVal: "gc" },
-    {
-      value: "n-base",
-      label: "N Bases (inculding invalid bases)",
-      retVal: "nb",
-    },
-    { value: "original", label: "Original Sequence", retVal: "os" },
-    { value: "complement", label: "Complement Sequence", retVal: "cs" },
-    { value: "reverse", label: "Reverse Sequence", retVal: "rs" },
-    {
-      value: "rev-complement",
-      label: "Reverse Complement Sequence",
-      retVal: "rcs",
-    },
-  ];
-
   UValue = "ACTG";
-
-  countBase = (seq: string) => {
-    this.setState({ bcval: seq.length });
-  };
-
-  getGCRatio = (seq: string) => {
-    let gc = (seq.match(/G|C/g) || []).length;
-    let at = (seq.match(/A|T/g) || []).length;
-    let gcRatio = Math.round((100 * gc) / at) / 100;
-    this.setState({ gcval: gcRatio });
-  };
-
-  getNBase = (seq: string) => {
-    let inValid: number = seq.replace(/A|C|T|G|N|\s|\n/g, "").length;
-    let nBase: number = seq.match(/N/g) ? seq.match(/N/g).length : 0;
-    this.setState({ nbval: nBase, invalid: inValid });
-  };
-
-  sanitize = (seq: string) => {
-    let sanitizedSeq: string;
-    sanitizedSeq = seq.replace(/\s/g, "");
-    return sanitizedSeq.replace(/[^A|C|T|G|N]/g, "N");
-  };
-
-  addSpace = (seq: string) => {
-    if (this.state.grp === 0) {
-      return seq;
-    }
-    const re = new RegExp(`.{0,` + this.state.grp + `}`, "g");
-    return seq.match(re).join(" ");
-  };
-
-  rev = (seq: string) => {
-    return seq.split("").reverse().join("");
-  };
-
-  comp = (seq: string) => {
-    let lookup: { [key: string]: string } = {
-      A: "T",
-      T: "A",
-      C: "G",
-      G: "C",
-      N: "N",
-    };
-    return seq
-      .split("")
-      .map((el) => lookup[el])
-      .join("");
-  };
 
   displaySeqs = (seq: string) => {
     if (this.state.os) {
-      this.setState({ osval: this.addSpace(seq) });
+      this.setState({ osval: addSpace(seq, this.state.grp) });
     }
     if (this.state.rs) {
-      this.setState({ rsval: this.addSpace(this.rev(seq)) });
+      this.setState({ rsval: addSpace(seq.rev(), this.state.grp) });
     }
     if (this.state.cs) {
-      this.setState({ csval: this.addSpace(this.comp(seq)) });
+      this.setState({ csval: addSpace(seq.comp(), this.state.grp) });
     }
     if (this.state.rcs) {
       this.setState({
-        rcsval: this.addSpace(this.rev(this.comp(seq))),
+        rcsval: addSpace(seq.rev().comp(), this.state.grp),
       });
     }
   };
@@ -136,12 +64,12 @@ export default class App extends React.Component {
     if (!value) {
       value = "";
     }
-    this.UValue = this.sanitize(value.toUpperCase());
+    this.UValue = value.sanitize();
     this.setState({ seq: value });
     this.displaySeqs(this.UValue);
-    this.countBase(this.UValue);
-    this.getGCRatio(this.UValue);
-    this.getNBase(value.toUpperCase());
+    this.setState({ bcval: this.UValue.countBase() });
+    this.setState({ gcval: this.UValue.getGCRatio() });
+    this.setState({ nbval: value.getNBase(), invalid: value.getInvalidBase() });
   };
 
   onFocus = (event: React.FormEvent<HTMLTextAreaElement>) => {
@@ -271,7 +199,7 @@ export default class App extends React.Component {
                 style={{ width: "95%" }}
               />
               <h3>Options</h3>
-              {this.ops.map((el) => {
+              {ops.map((el) => {
                 return (
                   <Options
                     value={el.value}
