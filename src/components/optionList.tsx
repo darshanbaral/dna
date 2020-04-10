@@ -30,13 +30,11 @@ export default function OptionList(props: any) {
   };
 
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <div
         style={{
-          position: "fixed",
+          position: "absolute",
           top: "10px",
-          left: "max(5%, calc(100vw - 960px))",
-          transform: "translateX(-100%)",
           fontSize: "45px",
         }}
         onClick={handleOpen}
@@ -53,6 +51,7 @@ export default function OptionList(props: any) {
         onClose={handleClose}
         aria-labelledby="Options"
         aria-describedby="Options"
+        style={{ overflowY: "scroll" }}
       >
         <div
           style={{
