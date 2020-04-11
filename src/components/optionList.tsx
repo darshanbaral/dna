@@ -8,6 +8,7 @@ import ops from "./selectionOptions";
 
 export default function OptionList(props: any) {
   const [open, setOpen] = React.useState(false);
+  const [sliderVal, setSliderVal] = React.useState(props.grp);
   let currentCheckedState: { [key: string]: boolean } = props.checkedState;
   const [checkedState, setCheckedState] = React.useState(currentCheckedState);
 
@@ -18,6 +19,7 @@ export default function OptionList(props: any) {
   };
 
   const handleSliderChange = (_event: any, value: any) => {
+    setSliderVal(value);
     props.onSliderChange(_event, value);
   };
 
@@ -85,7 +87,7 @@ export default function OptionList(props: any) {
 
           <h3 style={{ margin: "0.5em 0 0 0" }}>Chunk Size</h3>
           <Slider
-            defaultValue={4}
+            defaultValue={sliderVal}
             aria-labelledby="discrete-slider"
             valueLabelDisplay="auto"
             onChange={handleSliderChange}

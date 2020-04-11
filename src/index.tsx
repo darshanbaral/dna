@@ -100,6 +100,7 @@ export default class App extends React.Component {
             }}
             onCheckboxToggle={this.handleCheckboxToggle}
             onSliderChange={this.handleSliderChange}
+            grp={this.state.grp}
           />
         </div>
         <div
