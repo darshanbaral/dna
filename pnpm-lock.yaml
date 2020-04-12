@@ -1,8 +1,10 @@
 dependencies:
   '@material-ui/core': 4.6.1_71c752c95b712336a031af2ed7a425d6
   '@material-ui/icons': 4.9.1_e6b181dd9d06bb33fd1200732c4326e3
+  '@types/react-copy-to-clipboard': 4.3.0
   gh-pages: 2.2.0
   react: 16.8.4
+  react-copy-to-clipboard: 5.0.2_react@16.8.4
   react-dom: 16.8.4_react@16.8.4
   react-scripts: 2.1.3
   styled-components: 4.4.1_9e944a9170fa957e5383b35182b0d586
@@ -1787,6 +1789,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ce5d3q03Ex0sy4R14722Rmt6MT07Ua+k4FwDfdcToYJcMKNtRVQvJ6JCAPdAmAnbRb6CsX6aYb9m96NGod9uTw==
+  /@types/react-copy-to-clipboard/4.3.0:
+    dependencies:
+      '@types/react': 16.8.8
+    dev: false
+    resolution:
+      integrity: sha512-iideNPRyroENqsOFh1i2Dv3zkviYS9r/9qD9Uh3Z9NNoAAqqa2x53i7iGndGNnJFIo20wIu7Hgh77tx1io8bgw==
   /@types/react-dom/16.8.2:
     dependencies:
       '@types/react': 16.8.8
@@ -3400,6 +3408,12 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
+  /copy-to-clipboard/3.3.1:
+    dependencies:
+      toggle-selection: 1.0.6
+    dev: false
+    resolution:
+      integrity: sha512-i13qo6kIHTTpCm8/Wup+0b1mVWETvu2kIMzKoK8FpkLkFxlt0znUAHcMzox+T8sPlqtZXq3CulEjQHsYiGFJUw==
   /core-js-compat/3.6.4:
     dependencies:
       browserslist: 4.11.1
@@ -9189,6 +9203,16 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-mAYn96B/nB6kWG87Ry70F4D4rsycU43VYTj3ZCbKP+SLJXwC0x6YCbwcICh3uW8/C9s1VgP197yx+w7SCWeDdQ==
+  /react-copy-to-clipboard/5.0.2_react@16.8.4:
+    dependencies:
+      copy-to-clipboard: 3.3.1
+      prop-types: 15.7.2
+      react: 16.8.4
+    dev: false
+    peerDependencies:
+      react: ^15.3.0 || ^16.0.0
+    resolution:
+      integrity: sha512-/2t5mLMMPuN5GmdXo6TebFa8IoFxZ+KTDDqYhcDm0PhkgEzSxVvIX26G20s1EB02A4h2UZgwtfymZ3lGJm0OLg==
   /react-dev-utils/7.0.5:
     dependencies:
       '@babel/code-frame': 7.0.0
@@ -10675,6 +10699,10 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-FWtleNAtZ/Ki2qtqej2CXTOayOH9bHDQF+Q48VpWyDXjbYxA4Yz8iDB31zXOBUlOHHKidDbqGVrTUvQMPmBGBw==
+  /toggle-selection/1.0.6:
+    dev: false
+    resolution:
+      integrity: sha1-bkWxJj8gF/oKzH2J14sVuL932jI=
   /toidentifier/1.0.0:
     dev: false
     engines:
@@ -11564,9 +11592,11 @@ specifiers:
   '@material-ui/core': 4.6.1
   '@material-ui/icons': ^4.9.1
   '@types/react': 16.8.8
+  '@types/react-copy-to-clipboard': ^4.3.0
   '@types/react-dom': 16.8.2
   gh-pages: ^2.2.0
   react: 16.8.4
+  react-copy-to-clipboard: ^5.0.2
   react-dom: 16.8.4
   react-scripts: 2.1.3
   styled-components: 4.4.1

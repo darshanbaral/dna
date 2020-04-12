@@ -78,13 +78,22 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div className="App" style={{ display: "flex", flexDirection: "column" }}>
+      <div
+        className="App"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          position: "relative",
+        }}
+      >
         <div
           style={{
             width: "50px",
-            height: "100vh",
+            height: "50px",
             position: "fixed",
             top: "0",
+            backgroundColor: "whitesmoke",
+            zIndex: 20,
           }}
         >
           {" "}
@@ -194,28 +203,28 @@ export default class App extends React.Component {
             show={this.state.nb}
           />
           <PanelContainer
-            label="Original Sequence"
+            label="Original"
             content={
               <SeqPanelContent val={this.state.osval} show={this.state.os} />
             }
             show={this.state.os}
           />
           <PanelContainer
-            label="Complement Sequence"
+            label="Complement"
             content={
               <SeqPanelContent val={this.state.csval} show={this.state.cs} />
             }
             show={this.state.cs}
           />
           <PanelContainer
-            label="Reverse Sequence"
+            label="Reverse"
             content={
               <SeqPanelContent val={this.state.rsval} show={this.state.rs} />
             }
             show={this.state.rs}
           />
           <PanelContainer
-            label="Reverse Complement Sequence"
+            label="Reverse Complement"
             content={
               <SeqPanelContent val={this.state.rcsval} show={this.state.rcs} />
             }

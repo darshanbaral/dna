@@ -1,6 +1,9 @@
 import * as React from "react";
 import Modal from "@material-ui/core/Modal";
 import Slider from "@material-ui/core/Slider";
+import Tooltip from "@material-ui/core/Tooltip";
+import Zoom from "@material-ui/core/Zoom";
+import Fab from "@material-ui/core/Fab";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import Options from "./options";
@@ -32,20 +35,17 @@ export default function OptionList(props: any) {
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div>
       <div
         style={{
           position: "absolute",
-          top: "10px",
-          fontSize: "45px",
+          top: "15px",
         }}
         onClick={handleOpen}
       >
-        <MenuRoundedIcon
-          color="primary"
-          fontSize="inherit"
-          style={{ cursor: "pointer" }}
-        />
+        <Fab color="primary" size="small">
+          <MenuRoundedIcon style={{ cursor: "pointer" }} />
+        </Fab>
       </div>
 
       <Modal

@@ -20,23 +20,21 @@ export default function PanelContainer(props: any) {
   };
 
   return (
-    <div>
-      <ExpansionPanel
-        disabled={!props.show}
-        expanded={show && props.show}
-        style={{ margin: "10px 0" }}
-        onChange={handleChange}
+    <ExpansionPanel
+      disabled={!props.show}
+      expanded={show && props.show}
+      style={{ margin: "10px 0", position: "relative" }}
+      onChange={handleChange}
+    >
+      <ExpansionPanelSummary
+        style={{ margin: "0", minHeight: "1em", padding: "0 24px" }}
+        expandIcon={<ExpandMoreIcon />}
       >
-        <ExpansionPanelSummary
-          style={{ margin: "0", minHeight: "1em", padding: "0 24px" }}
-          expandIcon={<ExpandMoreIcon />}
-        >
-          <h4 style={{ margin: "0" }}>{props.label}</h4>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails style={{ padding: "0 24px" }}>
-          {props.content}
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    </div>
+        <h4 style={{ margin: "0" }}>{props.label}</h4>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails style={{ padding: "0 24px" }}>
+        {props.content}
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
   );
 }
