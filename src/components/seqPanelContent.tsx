@@ -23,7 +23,7 @@ export default function SeqPanelContent(props: any) {
     borderRadius: "3px",
     fontSize: "0.8em",
     padding: "2px",
-    margin: "0",
+    margin: "5px 0",
     visibility: disp,
     opacity: disp === "hidden" ? 0 : 1,
     transition: "all 0.5s",
@@ -47,9 +47,9 @@ export default function SeqPanelContent(props: any) {
           left: "-75px",
         }}
       >
-        <CopyToClipboard text={props.val}>
+        <CopyToClipboard text={props.val} onCopy={handleClick}>
           <IconButton aria-label="copy" color="primary">
-            <FileCopyOutlinedIcon onClick={handleClick} />
+            <FileCopyOutlinedIcon />
           </IconButton>
         </CopyToClipboard>
         <p style={msgStyle}>Copied</p>
