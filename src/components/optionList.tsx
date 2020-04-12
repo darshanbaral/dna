@@ -1,8 +1,7 @@
 import * as React from "react";
 import Modal from "@material-ui/core/Modal";
 import Slider from "@material-ui/core/Slider";
-import Tooltip from "@material-ui/core/Tooltip";
-import Zoom from "@material-ui/core/Zoom";
+import IconButton from "@material-ui/core/IconButton";
 import Fab from "@material-ui/core/Fab";
 import MenuRoundedIcon from "@material-ui/icons/MenuRounded";
 import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
@@ -78,11 +77,9 @@ export default function OptionList(props: any) {
             }}
           >
             <h2 style={{ margin: "0" }}>Options</h2>
-            <CloseRoundedIcon
-              color="primary"
-              onClick={handleClose}
-              style={{ cursor: "pointer" }}
-            />
+            <IconButton aria-label="copy" color="primary">
+              <CloseRoundedIcon onClick={handleClose} />
+            </IconButton>
           </div>
 
           <h3 style={{ margin: "0.5em 0 0 0" }}>Chunk Size</h3>
