@@ -31,15 +31,13 @@ export default function SeqPanelContent(props: any) {
 
   const makeNRed = (seq: string) => {
     return seq.split("").map((el: string) => {
-      return (
-        <span style={{ color: el === "N" ? "red" : "inherit" }}>{el}</span>
-      );
+      return <span className={"nt_" + el}>{el}</span>;
     });
   };
 
   return props.show ? (
     <div style={{ position: "relative" }}>
-      <pre>{makeNRed(props.val)}</pre>
+      <pre>{makeNRed(props.data.addSpace(props.grp))}</pre>
       <div
         style={{
           position: "absolute",

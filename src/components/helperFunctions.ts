@@ -46,7 +46,7 @@ String.prototype.rev = function () {
 };
 
 String.prototype.comp = function () {
-  let lookup: { [key: string]: string } = {
+  const lookup: { [key: string]: string } = {
     A: "T",
     T: "A",
     C: "G",

@@ -27,3 +27,21 @@ h2 {
 h3 {
   font-size: 1.5em;
 }
+.nt_A {
+  color: green;
+}
+.nt_T {
+  color: green;
+}
+.nt_C {
+  color: black;
+}
+.nt_G {
+  color: black;
+}
+.nt_N {
+  color: red;
+}
+.nt_ {
+  color: inherit;
+}

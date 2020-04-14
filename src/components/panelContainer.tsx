@@ -11,14 +11,6 @@ export default function PanelContainer(props: any) {
     setShow(!show);
   };
 
-  const makeNRed = (seq: string) => {
-    return seq.split("").map((el: string) => {
-      return (
-        <span style={{ color: el === "N" ? "red" : "inherit" }}>{el}</span>
-      );
-    });
-  };
-
   return (
     <ExpansionPanel
       disabled={!props.show}

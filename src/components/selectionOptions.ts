@@ -2,7 +2,7 @@
 const ops = [
   {
     value: "base-count",
-    label: "Number of Bases",
+    label: "Base Count",
     retVal: "bc",
   },
   { value: "gc-ratio", label: "GC ratio", retVal: "gc" },

@@ -10,42 +10,16 @@ import "./styles.css";
 
 export default class App extends React.Component {
   state: { [key: string]: any } = {
-    seq: "ACTG",
+    rawValue: "ACTG",
+    sanitizedValue: "ACTG",
     bc: true, //base count
-    bcval: 4,
     gc: true, //GC ratio
-    gcval: 0.5,
     nb: true, //N bases
-    nbval: 0,
-    invalid: 0,
     os: true, //Original Sequence
-    osval: "ACTG",
     cs: true, //Complement Sequence
-    csval: "TGAC",
     rs: true, //Reverse Sequence
-    rsval: "GTCA",
     rcs: true, //Reverse Complement Sequence
-    rcsval: "CAGT",
     grp: 4, //Groups of letters in the output (eg. ACT GTA CT)
-  };
-
-  sanitizedValue = "ACTG";
-
-  displaySeqs = (seq: string) => {
-    if (this.state.os) {
-      this.setState({ osval: seq.addSpace(this.state.grp) });
-    }
-    if (this.state.rs) {
-      this.setState({ rsval: seq.rev().addSpace(this.state.grp) });
-    }
-    if (this.state.cs) {
-      this.setState({ csval: seq.comp().addSpace(this.state.grp) });
-    }
-    if (this.state.rcs) {
-      this.setState({
-        rcsval: seq.rev().comp().addSpace(this.state.grp),
-      });
-    }
   };
 
   onInputChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
@@ -54,12 +28,8 @@ export default class App extends React.Component {
     if (!value) {
       value = "";
     }
-    this.sanitizedValue = value.sanitize();
-    this.setState({ seq: value });
-    this.displaySeqs(this.sanitizedValue);
-    this.setState({ bcval: value.countBase() });
-    this.setState({ gcval: value.getGCRatio() });
-    this.setState({ nbval: value.getNBase(), invalid: value.getInvalidBase() });
+    this.setState({ rawValue: value });
+    this.setState({ sanitizedValue: value.sanitize() });
   };
 
   onFocusInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
@@ -71,12 +41,12 @@ export default class App extends React.Component {
   };
 
   handleSliderChange = (_event: any, value: any) => {
-    this.setState({ grp: value }, () => {
-      this.displaySeqs(this.sanitizedValue);
-    });
+    this.setState({ grp: value });
   };
 
   render() {
+    let Nbases: number = this.state.rawValue.getNBase();
+    let invalidBases: number = this.state.rawValue.getInvalidBase();
     return (
       <div
         className="App"
@@ -134,9 +104,10 @@ export default class App extends React.Component {
                 resize: "vertical",
                 minHeight: "20px",
                 fontSize: "1em",
+                padding: "5px",
               }}
               rows={5}
-              value={this.state.seq}
+              value={this.state.rawValue}
               spellCheck={false}
               aria-label="Enter DNA sequence"
               placeholder="White spaces and line breaks will be ignored. Input is not case sensitive."
@@ -150,9 +121,7 @@ export default class App extends React.Component {
             label="Base Count"
             content={
               this.state.bc ? (
-                <React.Fragment>
-                  <pre>{this.state.bcval}</pre>
-                </React.Fragment>
+                <pre>{this.state.sanitizedValue.countBase()}</pre>
               ) : (
                 ""
               )
@@ -163,9 +132,7 @@ export default class App extends React.Component {
             label="GC Ratio"
             content={
               this.state.gc ? (
-                <React.Fragment>
-                  <pre>{this.state.gcval}</pre>
-                </React.Fragment>
+                <pre>{this.state.sanitizedValue.getGCRatio()}</pre>
               ) : (
                 ""
               )
@@ -176,26 +143,24 @@ export default class App extends React.Component {
             label="N Bases"
             content={
               this.state.nb ? (
-                <React.Fragment>
-                  <pre>
-                    <span
-                      style={{
-                        color: this.state.nbval > 0 ? "red" : "inherit",
-                      }}
-                    >
-                      {this.state.nbval}
-                    </span>{" "}
-                    N bases and{" "}
-                    <span
-                      style={{
-                        color: this.state.invalid > 0 ? "red" : "inherit",
-                      }}
-                    >
-                      {this.state.invalid}
-                    </span>{" "}
-                    invalid bases.
-                  </pre>
-                </React.Fragment>
+                <pre>
+                  <span
+                    style={{
+                      color: Nbases > 0 ? "red" : "inherit",
+                    }}
+                  >
+                    {Nbases}
+                  </span>{" "}
+                  N bases and{" "}
+                  <span
+                    style={{
+                      color: invalidBases > 0 ? "red" : "inherit",
+                    }}
+                  >
+                    {invalidBases}
+                  </span>{" "}
+                  invalid bases.
+                </pre>
               ) : (
                 ""
               )
@@ -206,9 +171,9 @@ export default class App extends React.Component {
             label="Original"
             content={
               <SeqPanelContent
-                val={this.state.osval}
                 grp={this.state.grp}
                 show={this.state.os}
+                data={this.state.os ? this.state.sanitizedValue : ""}
               />
             }
             show={this.state.os}
@@ -217,9 +182,9 @@ export default class App extends React.Component {
             label="Complement"
             content={
               <SeqPanelContent
-                val={this.state.csval}
                 grp={this.state.grp}
                 show={this.state.cs}
+                data={this.state.cs ? this.state.sanitizedValue.comp() : ""}
               />
             }
             show={this.state.cs}
@@ -228,9 +193,9 @@ export default class App extends React.Component {
             label="Reverse"
             content={
               <SeqPanelContent
-                val={this.state.rsval}
                 grp={this.state.grp}
                 show={this.state.rs}
+                data={this.state.rs ? this.state.sanitizedValue.rev() : ""}
               />
             }
             show={this.state.rs}
@@ -239,9 +204,11 @@ export default class App extends React.Component {
             label="Reverse Complement"
             content={
               <SeqPanelContent
-                val={this.state.rcsval}
                 grp={this.state.grp}
                 show={this.state.rcs}
+                data={
+                  this.state.rcs ? this.state.sanitizedValue.rev().comp() : ""
+                }
               />
             }
             show={this.state.rcs}
