@@ -45,7 +45,7 @@ export default function SeqPanelContent(props: any) {
           left: "-75px",
         }}
       >
-        <CopyToClipboard text={props.val} onCopy={handleClick}>
+        <CopyToClipboard text={props.data} onCopy={handleClick}>
           <IconButton aria-label="copy" color="primary">
             <FileCopyOutlinedIcon />
           </IconButton>
