@@ -205,28 +205,44 @@ export default class App extends React.Component {
           <PanelContainer
             label="Original"
             content={
-              <SeqPanelContent val={this.state.osval} show={this.state.os} />
+              <SeqPanelContent
+                val={this.state.osval}
+                grp={this.state.grp}
+                show={this.state.os}
+              />
             }
             show={this.state.os}
           />
           <PanelContainer
             label="Complement"
             content={
-              <SeqPanelContent val={this.state.csval} show={this.state.cs} />
+              <SeqPanelContent
+                val={this.state.csval}
+                grp={this.state.grp}
+                show={this.state.cs}
+              />
             }
             show={this.state.cs}
           />
           <PanelContainer
             label="Reverse"
             content={
-              <SeqPanelContent val={this.state.rsval} show={this.state.rs} />
+              <SeqPanelContent
+                val={this.state.rsval}
+                grp={this.state.grp}
+                show={this.state.rs}
+              />
             }
             show={this.state.rs}
           />
           <PanelContainer
             label="Reverse Complement"
             content={
-              <SeqPanelContent val={this.state.rcsval} show={this.state.rcs} />
+              <SeqPanelContent
+                val={this.state.rcsval}
+                grp={this.state.grp}
+                show={this.state.rcs}
+              />
             }
             show={this.state.rcs}
           />
