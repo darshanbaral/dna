@@ -11,7 +11,6 @@ body {
 code,
 pre {
   font-family: "Roboto Mono", monospace;
-  color: blue;
 }
 pre {
   white-space: pre-wrap;
@@ -44,4 +43,12 @@ h3 {
 }
 .nt_ {
   color: inherit;
+}
+.info {
+  background-color: #cfd8dc;
+  margin-top: 6px;
+  margin-right: 12px;
+  padding: 3px;
+  border-radius: 3px;
+  font-size: 0.85em;
 }

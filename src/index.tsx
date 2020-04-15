@@ -12,9 +12,6 @@ export default class App extends React.Component {
   state: { [key: string]: any } = {
     rawValue: "ACTG",
     sanitizedValue: "ACTG",
-    bc: true, //base count
-    gc: true, //GC ratio
-    nb: true, //N bases
     os: true, //Original Sequence
     cs: true, //Complement Sequence
     rs: true, //Reverse Sequence
@@ -47,6 +44,7 @@ export default class App extends React.Component {
   render() {
     let Nbases: number = this.state.rawValue.getNBase();
     let invalidBases: number = this.state.rawValue.getInvalidBase();
+    let gcRatio: number = this.state.sanitizedValue.getGCRatio();
     return (
       <div
         className="App"
@@ -69,9 +67,6 @@ export default class App extends React.Component {
           {" "}
           <OptionList
             checkedState={{
-              bc: this.state.bc,
-              gc: this.state.gc,
-              nb: this.state.nb,
               rs: this.state.rs,
               os: this.state.os,
               cs: this.state.cs,
@@ -115,58 +110,36 @@ export default class App extends React.Component {
               onFocus={this.onFocusInput}
             />
           </FormGroup>
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
+            <div className="info">
+              Bases: <code>{this.state.sanitizedValue.countBase()}</code>{" "}
+            </div>
+            <div className="info">
+              GC Ratio: <code>{gcRatio > 0 ? gcRatio : 0}</code>{" "}
+            </div>
+            <div className="info">
+              N Bases:{" "}
+              <code
+                style={{
+                  color: Nbases > 0 ? "#dd2c00" : "inherit",
+                }}
+              >
+                {Nbases}
+              </code>
+            </div>
+            <div className="info">
+              Invalid Bases:{" "}
+              <code
+                style={{
+                  color: invalidBases > 0 ? "#dd2c00" : "inherit",
+                }}
+              >
+                {invalidBases}
+              </code>
+            </div>
+          </div>
 
           <h3 style={{ margin: "10px 0 0 0" }}>Outputs</h3>
-          <PanelContainer
-            label="Base Count"
-            content={
-              this.state.bc ? (
-                <pre>{this.state.sanitizedValue.countBase()}</pre>
-              ) : (
-                ""
-              )
-            }
-            show={this.state.bc}
-          />
-          <PanelContainer
-            label="GC Ratio"
-            content={
-              this.state.gc ? (
-                <pre>{this.state.sanitizedValue.getGCRatio()}</pre>
-              ) : (
-                ""
-              )
-            }
-            show={this.state.gc}
-          />
-          <PanelContainer
-            label="N Bases"
-            content={
-              this.state.nb ? (
-                <pre>
-                  <span
-                    style={{
-                      color: Nbases > 0 ? "red" : "inherit",
-                    }}
-                  >
-                    {Nbases}
-                  </span>{" "}
-                  N bases and{" "}
-                  <span
-                    style={{
-                      color: invalidBases > 0 ? "red" : "inherit",
-                    }}
-                  >
-                    {invalidBases}
-                  </span>{" "}
-                  invalid bases.
-                </pre>
-              ) : (
-                ""
-              )
-            }
-            show={this.state.nb}
-          />
           <PanelContainer
             label="Original"
             content={
